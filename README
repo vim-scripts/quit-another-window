@@ -1,0 +1,63 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3573
+
+Often i need to close some other window and keep working in current window.
+For example, if i read some help in upper window, and i edit code in lower
+window. In the definite moment i decide to close help window. To do it,
+i have to press "Ctrl_W k :q".
+
+Not very short. And this is not the worse variant.
+Other variant:
+
++-----------------+-----------------+
+|      help           |                        |
+|     window      |                        |
+|                         |     current      |
++-----------------+     window     |
+|                         |                        |
+|                         | <cursor>       |
+|                         |                        |
+|                         |                        |
++-----------------+-----------------+
+
+Focus is in the 'current window', cursor is on the <cursor> sign. 
+I want to close 'help window' and keep working in current window.
+
+That's what i need to do: 
+
+Ctrl_W h Ctrl_W k :q Ctrl_W l
+
+This is very long!
+So, i wrote this plugin to make it easy.
+
+It provides 5 commands.
+
+Firstly, four commands for most-frequently actions:
+
+      :Qh means "close left window and go back"
+      :Qj means "close lower window and go back"
+      :Qk means "close upper window and go back"
+      :Ql means "close right window and go back"
+
+And one universal command:
+      :Q <args>, where <args> is movement commands to needed window.
+      
+      For example, ":Q hk" means "Go to the left window, then go to upper window,
+                                  close it and go back to source window"
+
+      So, this long long command "Ctrl_W h Ctrl_W k :q Ctrl_W l"
+      is truncated to short expression: ":Q hk"
+
+There's one optional dependency: CmdAlias plugin (vimscript #746).
+
+If CmdAlias is installed, then lowercased aliases of commands will be available:   :qh, :qj, :qk, :ql, :q <args>.
+I found it useful.
+
+
+Please NOTE: 
+
+1) if :Q without arguments is passed, then current window becomes closed.
+   (to provide compatibility of lowercased command :q)
+
+2) If argument is passed, but target window is the same as current window, then
+   no window will be closed.
+
