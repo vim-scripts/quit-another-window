@@ -1,11 +1,18 @@
 "=============================================================================
 " File:        quit_another_window.vim
 " Author:      Dmitry Frank (dimon.frank@gmail.com)
-" Version:     1.02
+" Version:     1.03
 "=============================================================================
 " See documentation in accompanying help file
 " You may use this code in whatever way you see fit.
 
+function! <SID>QuitWindow(boolBang)
+   if (!a:boolBang)
+      :q
+   else
+      :q!
+   endif
+endfunction
 
 "" function to close other window
 "  @param sWincmd - window movement command(s). 
@@ -18,10 +25,10 @@
 "                                     then go to right window,
 "                                     then close it.
 "                                etc.
-function! <SID>QuitAnotherWindow(sWincmd)
+function! <SID>QuitAnotherWindow(sWincmd, boolBang)
 
    if empty(a:sWincmd)
-      :q
+      call <SID>QuitWindow(a:boolBang)
       return
    endif
 
@@ -51,7 +58,7 @@ function! <SID>QuitAnotherWindow(sWincmd)
    endif
 
    " close needed window
-   :q
+   call <SID>QuitWindow(a:boolBang)
 
    " go to starting window
    while (winnr() != l:iCurWinnr)
@@ -62,12 +69,12 @@ endfunction
 
 
 " define plugin's commands
-command! -nargs=? -complete=file Qh call <SID>QuitAnotherWindow('h')
-command! -nargs=? -complete=file Qj call <SID>QuitAnotherWindow('j')
-command! -nargs=? -complete=file Qk call <SID>QuitAnotherWindow('k')
-command! -nargs=? -complete=file Ql call <SID>QuitAnotherWindow('l')
+command! -nargs=? -bang -complete=file Qh call <SID>QuitAnotherWindow('h', <bang>0)
+command! -nargs=? -bang -complete=file Qj call <SID>QuitAnotherWindow('j', <bang>0)
+command! -nargs=? -bang -complete=file Qk call <SID>QuitAnotherWindow('k', <bang>0)
+command! -nargs=? -bang -complete=file Ql call <SID>QuitAnotherWindow('l', <bang>0)
 
-command! -nargs=? -complete=file Q call <SID>QuitAnotherWindow("<args>")
+command! -nargs=? -bang -complete=file Q call <SID>QuitAnotherWindow("<args>", <bang>0)
 
 
 
