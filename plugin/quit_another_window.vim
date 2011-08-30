@@ -1,10 +1,30 @@
 "=============================================================================
 " File:        quit_another_window.vim
 " Author:      Dmitry Frank (dimon.frank@gmail.com)
-" Version:     1.03
+" Version:     1.04
 "=============================================================================
 " See documentation in accompanying help file
 " You may use this code in whatever way you see fit.
+
+function! s:getchar()
+  let c = getchar()
+  if c =~ '^\d\+$'
+    let c = nr2char(c)
+  endif
+  return c
+endfunction
+
+function! s:inputtarget()
+  let a = s:getchar()
+  let c = ''
+  while a != ' '
+    if a =~ '^[hjkl]$'
+      let c = c . a
+    endif
+    let a = s:getchar()
+  endwhile
+  return c
+endfunction
 
 function! <SID>QuitWindow(boolBang)
    if (!a:boolBang)
@@ -76,7 +96,10 @@ command! -nargs=? -bang -complete=file Ql call <SID>QuitAnotherWindow('l', <bang
 
 command! -nargs=? -bang -complete=file Q call <SID>QuitAnotherWindow("<args>", <bang>0)
 
-
+nnoremap <silent> <Plug>QAnotherWin :<C-U>call <SID>QuitAnotherWindow(<SID>inputtarget(), 0)<CR>
+if !hasmapto("<Plug>QAnotherWin","n")
+   nmap <silent> <C-z> <Plug>QAnotherWin
+endif
 
 " define lowercased aliases if possible
 if exists("loaded_cmdalias") && exists("*CmdAlias")
@@ -87,6 +110,4 @@ if exists("loaded_cmdalias") && exists("*CmdAlias")
 
    call CmdAlias('q', 'Q')
 endif
-
-
 

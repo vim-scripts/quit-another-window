@@ -67,6 +67,15 @@ And one universal command:
       So, this long long command "Ctrl_W h Ctrl_W k :q Ctrl_W l"
       is truncated to short expression: ":Q hk"
 
+Other useful shortcut for the universal command can be overridden via
+specifying:
+
+      nmap <silent> <C-z> <Plug>QAnotherWin
+
+<C-z> is default. This shortcut waits you enter h,j,k,l as much as you want
+and finish your command with <Space>. The result will be same as :Q <args> but
+faster.
+
 About CmdAlias plugin: if CmdAlias is installed (vimscript #746), then five lowercased
 aliases of commands is available: :qh, :qj, :qk, :ql, :q <args>.
 
